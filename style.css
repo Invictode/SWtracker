@@ -1,0 +1,110 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* --- 1. NEW SLATE/BLUE COLOR PALETTE & GENERAL STYLES --- */
+:root {
+    --primary-color: #455a64; /* Blue Grey */
+    --primary-dark: #263238;
+    --accent-color: #1976d2; /* Steel Blue */
+    --background-color: #f5f5f5;
+    --surface-color: #ffffff;
+    --text-primary: #212121;
+    --text-secondary: #616161;
+    --border-color: #e0e0e0;
+    --danger-color: #d32f2f;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+header {
+    background: var(--primary-dark);
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 { margin: 0; font-weight: 600; }
+header nav { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.nav-btn { background-color: transparent; border: 1px solid #ffffff80; color: #ffffffc0; padding: 8px 16px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+.nav-btn:hover { background-color: #ffffff20; color: #ffffff; }
+.nav-btn.active { background-color: var(--surface-color); color: var(--primary-dark); border-color: var(--surface-color); }
+.nav-btn.sign-out { background-color: var(--danger-color); border-color: var(--danger-color); color: white; margin-left: 20px; }
+.nav-btn.sign-out:hover { background-color: #c62828; }
+main { padding: 20px; }
+
+/* --- 2. WARD & PATIENT CARD STYLES --- */
+.view-container { display: none; }
+#ward-board-view { display: block; display: flex; flex-direction: column; gap: 30px; }
+.ward-section { background-color: var(--surface-color); border-radius: 16px; padding: 25px; box-shadow: 0 4px 12px rgba(33, 49, 60, 0.05); }
+.ward-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+.ward-header h2 { margin: 0; color: var(--primary-dark); }
+.ward-header h2 i { margin-right: 10px; }
+.admit-btn { background-color: var(--accent-color); color: white; border: none; padding: 10px 18px; border-radius: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; cursor: pointer; transition: background-color 0.2s; display: flex; align-items: center; gap: 8px; }
+.admit-btn:hover { background-color: #1565c0; }
+.bed-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+.patient-card { background-color: #fafafa; border: 1px solid var(--border-color); border-left: 5px solid var(--accent-color); border-radius: 8px; padding: 20px; box-shadow: 0 1px 3px rgba(33, 49, 60, 0.05); cursor: pointer; }
+.patient-card.vacant:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.patient-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+.patient-card-header .bed-number { font-size: 1.5rem; font-weight: 700; color: var(--primary-dark); }
+.patient-card-header .patient-name { font-size: 1.15rem; font-weight: 600; text-align: right; }
+.patient-info p { margin: 8px 0; font-size: 0.95rem; color: var(--text-secondary); }
+.patient-info p strong { color: var(--text-primary); font-weight: 600; margin-right: 6px; }
+.department-tag { font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 12px; color: white; margin-left: 10px; }
+.dept-surgery { background-color: #0d47a1; }
+.dept-internal { background-color: #00695c; }
+.dept-pediatrics { background-color: #f57f17; }
+.card-actions { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; justify-content: flex-end; }
+.card-action-btn { background: none; border: 1px solid var(--border-color); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif; transition: all 0.2s; }
+.card-action-btn.edit { color: var(--accent-color); border-color: var(--accent-color); }
+.card-action-btn.discharge { color: var(--danger-color); border-color: var(--danger-color); }
+.card-action-btn:hover { color: white; }
+.card-action-btn.edit:hover { background-color: var(--accent-color); }
+.card-action-btn.discharge:hover { background-color: var(--danger-color); }
+.empty-ward-message { grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-secondary); font-style: italic; }
+
+/* --- 3. MODAL & FORM STYLES --- */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); overflow-y: auto; }
+.modal-content { background-color: #fefefe; margin: 20px auto; padding: 30px; border: 1px solid #888; width: 90%; max-width: 600px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+.close-button { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+.modal-content h2 { margin-top: 0; }
+.modal-content p { margin-bottom: 20px; color: var(--text-secondary); }
+.modal-content p strong { color: var(--text-primary); font-weight: 600; }
+.modal-content form label { display: block; margin-bottom: 5px; font-weight: 600; color: #555; }
+.modal-content form input, .modal-content form select, .modal-content form textarea { width: 100%; padding: 10px; margin-bottom: 15px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 8px; font-family: 'Poppins', sans-serif; }
+.form-row { display: flex; gap: 15px; }
+.form-group { flex: 1; }
+.form-actions { display: flex; justify-content: flex-end; margin-top: 20px; }
+.form-actions button { background-color: var(--accent-color); color: white; padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1rem; transition: background-color 0.2s; }
+.form-actions button:hover { background-color: #1565c0; }
+.actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.action-modal-btn { padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); background-color: #f8f9fa; font-size: 1rem; font-weight: 600; color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+.action-modal-btn i { font-size: 1.5rem; color: var(--secondary-color); transition: color 0.2s ease; }
+.action-modal-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--accent-color); color: var(--accent-color); }
+.action-modal-btn:hover i { color: var(--accent-color); }
+
+/* --- 4. LIST & STATS STYLES --- */
+.view-container { display: none; padding: 20px; }
+.list-header, .stats-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.list-header h2, .stats-header h2 { margin: 0; }
+.search-bar { padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); }
+.table-container { background-color: var(--surface-color); border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color); }
+thead { background-color: #f8f9fa; }
+th { font-weight: 600; color: #555; }
+tbody tr:hover { background-color: #eceff1; }
+.stats-header { justify-content: center; gap: 20px; }
+.stats-nav-btn { background-color: #e9ecef; border: 1px solid #ced4da; color: #495057; border-radius: 50%; width: 40px; height: 40px; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; display: flex; justify-content: center; align-items: center; }
+.stats-nav-btn:hover { background-color: #dee2e6; }
+.stats-nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.stats-grid.shift-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.stat-card { background-color: var(--surface-color); border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 4px solid var(--primary-color); }
+.stat-card h4 { margin-top: 0; margin-bottom: 15px; font-size: 1.1rem; color: #333; }
+.stat-card .stat-number { margin: 0; font-size: 2.5rem; font-weight: 700; color: var(--text-primary); }

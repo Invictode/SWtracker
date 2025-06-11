@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surgical Ward Patient Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Surgical Ward Patient Tracker</h1>
+        <nav>
+            <button id="nav-board" class="nav-btn active">Ward Board</button>
+            <button id="nav-discharged" class="nav-btn">Discharged</button>
+            <button id="nav-transferred" class="nav-btn">Transferred</button>
+            <button id="nav-lama" class="nav-btn">LAMA/DOR</button>
+            <button id="nav-stats" class="nav-btn">Statistics</button>
+            <button id="sign-out-btn" class="nav-btn sign-out">Sign Out</button>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <div id="ward-board-view" class="view-container">
+            <!-- Ward sections will be dynamically inserted here -->
+        </div>
+
+        <div id="discharged-view" class="view-container" style="display: none;">
+            <div class="list-header"><h2>Discharged Patients</h2><input type="text" id="search-discharged" class="search-bar" placeholder="Search..."></div>
+            <div class="table-container">
+                <table><thead><tr><th>Name</th><th>Bed</th><th>Department</th><th>Discharge Time</th><th>Final Diagnosis</th></tr></thead><tbody id="discharged-table-body"></tbody></table>
+            </div>
+        </div>
+        <div id="transferred-view" class="view-container" style="display: none;">
+            <div class="list-header"><h2>Transferred Patients</h2><input type="text" id="search-transferred" class="search-bar" placeholder="Search..."></div>
+            <div class="table-container">
+                <table><thead><tr><th>Name</th><th>Bed</th><th>Department</th><th>Transferred To</th><th>Transfer Time</th></tr></thead><tbody id="transferred-table-body"></tbody></table>
+            </div>
+        </div>
+        <div id="lama-view" class="view-container" style="display: none;">
+            <div class="list-header"><h2>LAMA / DOR Patients</h2><input type="text" id="search-lama" class="search-bar" placeholder="Search..."></div>
+            <div class="table-container">
+                <table><thead><tr><th>Name</th><th>Bed</th><th>Department</th><th>Status</th><th>Event Time</th></tr></thead><tbody id="lama-table-body"></tbody></table>
+            </div>
+        </div>
+        
+        <div id="stats-view" class="view-container" style="display: none;">
+            <div class="stats-header">
+                <button id="stats-prev-day" class="stats-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                <h2 id="stats-date-display">Today</h2>
+                <button id="stats-next-day" class="stats-nav-btn" disabled><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            <h3>Shift Report (Patient Arrivals, 8am to 8am)</h3>
+            <div class="stats-grid shift-grid">
+                <div class="stat-card"><h4>Shift 1 (8am - 4pm)</h4><p id="stats-s1-total" class="stat-number">0</p></div>
+                <div class="stat-card"><h4>Shift 2 (4pm - 12am)</h4><p id="stats-s2-total" class="stat-number">0</p></div>
+                <div class="stat-card"><h4>Shift 3 (12am - 8am)</h4><p id="stats-s3-total" class="stat-number">0</p></div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- MODALS -->
+    <div id="patient-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-title">Admit New Patient</h2>
+            <form id="patient-form">
+                <input type="hidden" id="patient-id-input">
+                <label for="bed-number">Bed Number:</label><input type="text" id="bed-number" required>
+                <label for="department">Primary Department:</label>
+                <select id="department" required>
+                    <option value="Surgery">Surgery</option>
+                    <option value="Internal Medicine">Internal Medicine</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                </select>
+                <label for="patient-name">Patient Name/ID:</label><input type="text" id="patient-name" required>
+                <div class="form-row">
+                    <div class="form-group"><label for="patient-age">Age:</label><input type="text" id="patient-age"></div>
+                    <div class="form-group"><label for="patient-sex">Sex:</label><select id="patient-sex"><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label for="date-of-op">Date of Operation:</label><input type="date" id="date-of-op"></div>
+                    <div class="form-group"><label for="op-status">Operation Status:</label><input type="text" id="op-status"></div>
+                </div>
+                <label for="procedure">Procedure:</label><textarea id="procedure" rows="2"></textarea>
+                <label for="diagnosis">Diagnosis:</label><textarea id="diagnosis" rows="2"></textarea>
+                <label for="plan">Plan / Issues:</label><textarea id="plan" rows="4"></textarea>
+                <div class="form-actions"><button type="submit" id="save-patient-btn">Save Patient</button></div>
+            </form>
+        </div>
+    </div>
+    <div id="actions-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Patient Actions</h2>
+            <p>Select an action for: <strong id="actions-patient-name"></strong></p>
+            <div class="actions-grid">
+                <button class="action-modal-btn" data-action="discharge-home"><i class="fa-solid fa-house-chimney-medical"></i>Discharge Home</button>
+                <button class="action-modal-btn" data-action="transfer"><i class="fa-solid fa-truck-medical"></i>Transfer to another hospital</button>
+                <button class="action-modal-btn" data-action="lama"><i class="fa-solid fa-person-walking-arrow-right"></i>LAMA</button>
+                <button class="action-modal-btn" data-action="dor"><i class="fa-solid fa-person-walking-arrow-right"></i>DOR</button>
+            </div>
+        </div>
+    </div>
+    <div id="hospital-transfer-modal" class="modal">
+         <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2>Transfer Patient</h2>
+            <form id="hospital-transfer-form">
+                 <p>Transferring: <strong id="hospital-transfer-patient-name"></strong></p>
+                 <input type="hidden" id="hospital-transfer-patient-id">
+                 <label for="transfer-hospital">Destination Hospital:</label><input type="text" id="transfer-hospital" required>
+                 <button type="submit">Confirm Transfer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT TAGS -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
